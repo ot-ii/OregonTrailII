@@ -1,4 +1,4 @@
-# otii_c
+# Oregon Trail II C Port
 
 A C port of Oregon Trail II over the course of 4+ years, made custom tooling
 to double check the C++ code was the same, found issues along the way, and
