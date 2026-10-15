@@ -1,0 +1,15 @@
+replays/
+tools/
+src/features/crowdcontrolconfig.h
+src/features/onlinescoresconfig.h
+*.bat
+*.txt
+*.map
+*.res
+*.exe
+*.obj
+*.token
+*.ini
+*.ilk
+*.pdb
+/*.ot2

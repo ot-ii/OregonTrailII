@@ -1,0 +1,69 @@
+#include <windows.h>
+
+#include "../src/app/version.h"
+
+LOGO1 BITMAP "resources\\bitmaps\\LOGO1.bmp"
+LOGO2 BITMAP "resources\\bitmaps\\LOGO2.bmp"
+LOGO3 BITMAP "resources\\bitmaps\\LOGO3.bmp"
+
+100 RCDATA "resources\\data\\credits.txt"
+
+OREGONII ICON "resources\\icons\\OREGONII.ico"
+1234 ICON "resources\\icons\\IconGroup1234.ico"
+
+CC_LOGO BITMAP "resources\\crowd\\cc_logo.bmp"
+2417 ICON "resources\\crowd\\cc_icon.ico"
+CC_FONT_REGULAR RCDATA "resources\\crowd\\Lexend-Regular.ttf"
+CC_FONT_BOLD RCDATA "resources\\crowd\\Lexend-Bold.ttf"
+
+ABOUTALOG DIALOG 14, 17, 280, 170
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+CAPTION "About Test Application"
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+FONT 8, "MS Sans Serif"
+{
+   CONTROL "OK", 1, BUTTON, BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 180, 135, 50, 14
+   CONTROL "Brought to you by...", -1, BUTTON, BS_GROUPBOX | WS_CHILD | WS_VISIBLE, 14, 44, 121, 111
+   CONTROL "", 1, "SCR_NAMES", WS_CHILD | WS_VISIBLE | WS_TABSTOP, 15, 56, 110, 98
+   CONTROL "Version 1.0\nCopyright 1994, MECC\n(612)569-1500", -1, STATIC, SS_LEFT | WS_CHILD | WS_VISIBLE | WS_GROUP, 160, 20, 141, 50
+}
+
+IDENTALOG DIALOG 14, 17, 207, 111
+STYLE DS_SYSMODAL | WS_POPUP | WS_BORDER
+CAPTION ""
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+FONT 8, "MS Sans Serif"
+{
+   CONTROL "", 101, EDIT, ES_LEFT | WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP, 69, 40, 103, 13
+   CONTROL "", 102, EDIT, ES_LEFT | WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP, 69, 60, 103, 13
+   CONTROL "OK", 1, BUTTON, BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 38, 88, 50, 14
+   CONTROL "Cancel", 2, BUTTON, BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 125, 88, 50, 14
+   CONTROL "Name", -1, STATIC, SS_LEFT | WS_CHILD | WS_VISIBLE | WS_GROUP, 20, 42, 35, 12
+   CONTROL "Organization", -1, STATIC, SS_LEFT | WS_CHILD | WS_VISIBLE | WS_GROUP, 20, 63, 43, 9
+   CONTROL "Please register your copy of this product:", -1, STATIC, SS_LEFT | WS_CHILD | WS_VISIBLE | WS_GROUP, 15, 17, 141, 10
+}
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION VER_MAJOR, VER_MINOR, VER_BUILD, 0
+PRODUCTVERSION VER_MAJOR, VER_MINOR, VER_BUILD, 0
+FILEFLAGSMASK 0x3FL
+FILEFLAGS 0x0L
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_APP
+FILESUBTYPE 0x0L
+{
+	BLOCK "StringFileInfo"
+	{
+		BLOCK "040904B0"
+		{
+			VALUE "FileDescription", "The Oregon Trail II"
+			VALUE "FileVersion", VER_STRING
+			VALUE "ProductName", "The Oregon Trail II"
+			VALUE "ProductVersion", VER_STRING
+		}
+	}
+	BLOCK "VarFileInfo"
+	{
+		VALUE "Translation", 0x409, 1200
+	}
+}

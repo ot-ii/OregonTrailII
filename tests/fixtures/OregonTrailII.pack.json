@@ -1,0 +1,1415 @@
+{
+	"meta":	{
+		"name":	"The Oregon Trail II",
+		"platform":	"PC",
+		"releaseDate":	"2026-10-10",
+		"connector":	["ExternalUnity"],
+		"description":	"Built into the modern Windows build of The Oregon Trail II: open Crowd Control on the game's menu bar, connect and start the session."
+	},
+	"effects":	{
+		"meta":	{
+			"variables":	{
+				"leader_name":	"The Wagon Leader",
+				"member2_name":	"Second Person",
+				"member3_name":	"Third Person",
+				"member4_name":	"Fourth Person",
+				"member5_name":	"Fifth Person",
+				"member6_name":	"Sixth Person"
+			}
+		},
+		"game":	{
+			"bad_cold":	{
+				"name":	"Bad Cold",
+				"price":	50,
+				"description":	"A crew member catches a bad cold.",
+				"category":	["Illnesses"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.300000011920929
+				}
+			},
+			"dysentery":	{
+				"name":	"Dysentery",
+				"price":	150,
+				"description":	"A crew member comes down with dysentery.",
+				"category":	["Illnesses"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.600000023841858
+				}
+			},
+			"measles":	{
+				"name":	"Measles",
+				"price":	150,
+				"description":	"A crew member catches the measles.",
+				"category":	["Illnesses"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.600000023841858
+				}
+			},
+			"typhoid_fever":	{
+				"name":	"Typhoid Fever",
+				"price":	250,
+				"description":	"A crew member comes down with typhoid fever.",
+				"category":	["Illnesses"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.699999988079071
+				}
+			},
+			"cholera":	{
+				"name":	"Cholera",
+				"price":	300,
+				"description":	"A crew member catches cholera.",
+				"category":	["Illnesses"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.800000011920929
+				}
+			},
+			"smallpox":	{
+				"name":	"Smallpox",
+				"price":	300,
+				"description":	"A crew member comes down with smallpox.",
+				"category":	["Illnesses"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.800000011920929
+				}
+			},
+			"rabies":	{
+				"name":	"Rabies",
+				"price":	400,
+				"description":	"A crew member has rabies.",
+				"category":	["Illnesses"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.899999976158142
+				}
+			},
+			"frostbite":	{
+				"name":	"Frostbite",
+				"price":	100,
+				"description":	"A crew member gets frostbite.",
+				"category":	["Injuries"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.5
+				}
+			},
+			"broken_arm":	{
+				"name":	"Broken Arm",
+				"price":	100,
+				"description":	"A crew member breaks an arm.",
+				"category":	["Injuries"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.5
+				}
+			},
+			"snakebite":	{
+				"name":	"Snakebite",
+				"price":	150,
+				"description":	"A rattlesnake bites a crew member.",
+				"category":	["Injuries"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.600000023841858
+				}
+			},
+			"broken_leg":	{
+				"name":	"Broken Leg",
+				"price":	200,
+				"description":	"A crew member breaks a leg.",
+				"category":	["Injuries"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.699999988079071
+				}
+			},
+			"drowning":	{
+				"name":	"Nearly Drowns",
+				"price":	200,
+				"description":	"A crew member nearly drowns.",
+				"category":	["Injuries"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.699999988079071
+				}
+			},
+			"random_disease":	{
+				"name":	"Random Disease",
+				"price":	150,
+				"description":	"A crew member falls ill with one of the trail's diseases, chosen at random.",
+				"category":	["Illnesses"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.600000023841858
+				}
+			},
+			"random_injury":	{
+				"name":	"Random Injury",
+				"price":	150,
+				"description":	"A crew member is hurt: a sprain, a broken bone, burns... chosen at random.",
+				"category":	["Injuries"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.600000023841858
+				}
+			},
+			"heal_member":	{
+				"name":	"Heal Someone",
+				"price":	200,
+				"description":	"Cures every illness of one person and restores their health.",
+				"category":	["Health"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Who",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"leader":	{
+								"name":	"{{leader_name}}"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.600000023841858,
+					"morality":	0.800000011920929
+				},
+				"tags":	["__cc_heal"]
+			},
+			"heal_all":	{
+				"name":	"Heal Everyone",
+				"price":	500,
+				"description":	"Cures the whole party and restores everyone's health.",
+				"category":	["Health"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0.699999988079071,
+					"morality":	0.899999976158142
+				},
+				"tags":	["__cc_heal"]
+			},
+			"kill":	{
+				"name":	"Kill a Crew Member",
+				"price":	2000,
+				"description":	"A crew member (not the wagon leader) dies on the spot.",
+				"category":	["Health"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.899999976158142,
+					"morality":	-1
+				},
+				"tags":	["__cc_kill"]
+			},
+			"member_missing":	{
+				"name":	"A Crew Member Goes Missing",
+				"price":	300,
+				"description":	"A crew member (not the wagon leader) wanders off: search for them, or go on without them.",
+				"category":	["Health"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"member":	{
+						"type":	"options",
+						"name":	"Crew member",
+						"options":	{
+							"random":	{
+								"name":	"Random"
+							},
+							"second":	{
+								"name":	"{{member2_name}}"
+							},
+							"third":	{
+								"name":	"{{member3_name}}"
+							},
+							"fourth":	{
+								"name":	"{{member4_name}}"
+							},
+							"fifth":	{
+								"name":	"{{member5_name}}"
+							},
+							"sixth":	{
+								"name":	"{{member6_name}}"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.600000023841858
+				}
+			},
+			"give_money":	{
+				"name":	"Give Money",
+				"price":	1,
+				"description":	"Dollars for the party's purse.",
+				"category":	["Money"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	1000
+				},
+				"alignment":	{
+					"orderliness":	0.5,
+					"morality":	0.5
+				}
+			},
+			"take_money":	{
+				"name":	"Take Money",
+				"price":	1,
+				"description":	"Dollars out of the party's purse.",
+				"category":	["Money"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	1000
+				},
+				"alignment":	{
+					"orderliness":	0.5,
+					"morality":	-0.5
+				}
+			},
+			"add_food":	{
+				"name":	"Give Food",
+				"price":	1,
+				"description":	"Pounds of the food of your choice.",
+				"category":	["Food"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	5,
+					"max":	500
+				},
+				"parameters":	{
+					"food":	{
+						"type":	"options",
+						"name":	"Food",
+						"options":	{
+							"salt pork":	{
+								"name":	"Meat (Salt Pork)"
+							},
+							"flour":	{
+								"name":	"Flour"
+							},
+							"dried beans":	{
+								"name":	"Beans"
+							},
+							"coffee beans":	{
+								"name":	"Coffee"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.5,
+					"morality":	0.5
+				}
+			},
+			"remove_food":	{
+				"name":	"Take Food",
+				"price":	1,
+				"description":	"Pounds of food go missing from the wagon.",
+				"category":	["Food"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	5,
+					"max":	500
+				},
+				"alignment":	{
+					"orderliness":	0.40000000596046448,
+					"morality":	-0.5
+				}
+			},
+			"give_firearm":	{
+				"name":	"Give a Firearm",
+				"price":	100,
+				"description":	"A rifle, shotgun or pistol.",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	3
+				},
+				"parameters":	{
+					"item":	{
+						"type":	"options",
+						"name":	"Firearm",
+						"options":	{
+							"rifle":	{
+								"name":	"Rifle"
+							},
+							"shotgun":	{
+								"name":	"Shotgun"
+							},
+							"pistol":	{
+								"name":	"Pistol"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.5,
+					"morality":	0.40000000596046448
+				}
+			},
+			"take_firearm":	{
+				"name":	"Take a Firearm",
+				"price":	150,
+				"description":	"A rifle, shotgun or pistol disappears.",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	3
+				},
+				"parameters":	{
+					"item":	{
+						"type":	"options",
+						"name":	"Firearm",
+						"options":	{
+							"rifle":	{
+								"name":	"Rifle"
+							},
+							"shotgun":	{
+								"name":	"Shotgun"
+							},
+							"pistol":	{
+								"name":	"Pistol"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.40000000596046448,
+					"morality":	-0.5
+				}
+			},
+			"give_ammo":	{
+				"name":	"Give Ammunition",
+				"price":	30,
+				"description":	"Bullets, shot or gunpowder.",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	10
+				},
+				"parameters":	{
+					"item":	{
+						"type":	"options",
+						"name":	"Ammunition",
+						"options":	{
+							"bullets":	{
+								"name":	"Bullets (Boxes of 20)"
+							},
+							"shot":	{
+								"name":	"Shot (10-lb. Sacks)"
+							},
+							"gunpowder":	{
+								"name":	"Gunpowder (25-lb. Kegs)"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.5,
+					"morality":	0.40000000596046448
+				}
+			},
+			"take_ammo":	{
+				"name":	"Take Ammunition",
+				"price":	40,
+				"description":	"Bullets, shot or gunpowder disappear.",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	10
+				},
+				"parameters":	{
+					"item":	{
+						"type":	"options",
+						"name":	"Ammunition",
+						"options":	{
+							"bullets":	{
+								"name":	"Bullets (Boxes of 20)"
+							},
+							"shot":	{
+								"name":	"Shot (10-lb. Sacks)"
+							},
+							"gunpowder":	{
+								"name":	"Gunpowder (25-lb. Kegs)"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.40000000596046448,
+					"morality":	-0.40000000596046448
+				}
+			},
+			"give_medicine":	{
+				"name":	"Give Medicine",
+				"price":	30,
+				"description":	"A medicine of your choice.",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	5
+				},
+				"parameters":	{
+					"item":	{
+						"type":	"options",
+						"name":	"Medicine",
+						"options":	{
+							"laudanum":	{
+								"name":	"Laudanum"
+							},
+							"peppermint":	{
+								"name":	"Peppermint"
+							},
+							"quinine":	{
+								"name":	"Quinine"
+							},
+							"iodine":	{
+								"name":	"Iodine"
+							},
+							"castor oil":	{
+								"name":	"Castor Oil"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.5,
+					"morality":	0.5
+				}
+			},
+			"take_medicine":	{
+				"name":	"Take Medicine",
+				"price":	40,
+				"description":	"A medicine disappears from the wagon.",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	5
+				},
+				"parameters":	{
+					"item":	{
+						"type":	"options",
+						"name":	"Medicine",
+						"options":	{
+							"laudanum":	{
+								"name":	"Laudanum"
+							},
+							"peppermint":	{
+								"name":	"Peppermint"
+							},
+							"quinine":	{
+								"name":	"Quinine"
+							},
+							"iodine":	{
+								"name":	"Iodine"
+							},
+							"castor oil":	{
+								"name":	"Castor Oil"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.40000000596046448,
+					"morality":	-0.5
+				}
+			},
+			"give_clothing":	{
+				"name":	"Give Clothing",
+				"price":	15,
+				"description":	"Clothing of your choice.",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	10
+				},
+				"parameters":	{
+					"clothing":	{
+						"type":	"options",
+						"name":	"Clothing",
+						"options":	{
+							"boots":	{
+								"name":	"Boots"
+							},
+							"pants":	{
+								"name":	"Pants"
+							},
+							"hat":	{
+								"name":	"Hat"
+							},
+							"mittens":	{
+								"name":	"Mittens"
+							},
+							"long underwear":	{
+								"name":	"Long Underwear"
+							},
+							"raincoat":	{
+								"name":	"Raincoat"
+							},
+							"blanket":	{
+								"name":	"Blanket"
+							},
+							"winter coat":	{
+								"name":	"Winter Coat"
+							},
+							"set of clothing":	{
+								"name":	"Set of Clothing"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.5,
+					"morality":	0.40000000596046448
+				}
+			},
+			"take_clothing":	{
+				"name":	"Take Clothing",
+				"price":	25,
+				"description":	"Clothing disappears from the wagon.",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	10
+				},
+				"parameters":	{
+					"clothing":	{
+						"type":	"options",
+						"name":	"Clothing",
+						"options":	{
+							"boots":	{
+								"name":	"Boots"
+							},
+							"pants":	{
+								"name":	"Pants"
+							},
+							"hat":	{
+								"name":	"Hat"
+							},
+							"mittens":	{
+								"name":	"Mittens"
+							},
+							"long underwear":	{
+								"name":	"Long Underwear"
+							},
+							"raincoat":	{
+								"name":	"Raincoat"
+							},
+							"blanket":	{
+								"name":	"Blanket"
+							},
+							"winter coat":	{
+								"name":	"Winter Coat"
+							},
+							"set of clothing":	{
+								"name":	"Set of Clothing"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.40000000596046448,
+					"morality":	-0.40000000596046448
+				}
+			},
+			"give_spare_part":	{
+				"name":	"Give a Spare Part",
+				"price":	50,
+				"description":	"A spare wagon wheel, axle, tongue or ox yoke.",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	3
+				},
+				"parameters":	{
+					"item":	{
+						"type":	"options",
+						"name":	"Spare part",
+						"options":	{
+							"spare wagon wheel":	{
+								"name":	"Wagon Wheel"
+							},
+							"spare wagon axle":	{
+								"name":	"Wagon Axle"
+							},
+							"spare wagon tongue":	{
+								"name":	"Wagon Tongue"
+							},
+							"spare ox yoke":	{
+								"name":	"Ox Yoke"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.5,
+					"morality":	0.600000023841858
+				}
+			},
+			"take_spare_part":	{
+				"name":	"Take a Spare Part",
+				"price":	75,
+				"description":	"A spare wagon part disappears.",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	3
+				},
+				"parameters":	{
+					"item":	{
+						"type":	"options",
+						"name":	"Spare part",
+						"options":	{
+							"spare wagon wheel":	{
+								"name":	"Wagon Wheel"
+							},
+							"spare wagon axle":	{
+								"name":	"Wagon Axle"
+							},
+							"spare wagon tongue":	{
+								"name":	"Wagon Tongue"
+							},
+							"spare ox yoke":	{
+								"name":	"Ox Yoke"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.40000000596046448,
+					"morality":	-0.5
+				}
+			},
+			"give_random_item":	{
+				"name":	"Give a Random Item",
+				"price":	25,
+				"description":	"Something from the store: food, clothes, a gun, a tool...",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0,
+					"morality":	0.40000000596046448
+				}
+			},
+			"take_random_item":	{
+				"name":	"Take a Random Item",
+				"price":	40,
+				"description":	"Something the party carries disappears.",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0,
+					"morality":	-0.40000000596046448
+				}
+			},
+			"theft":	{
+				"name":	"Theft",
+				"price":	200,
+				"description":	"A thief makes off with some of the party's goods.",
+				"category":	["Supplies"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.600000023841858
+				}
+			},
+			"break_part":	{
+				"name":	"Break the Wagon",
+				"price":	200,
+				"description":	"A wheel, axle or tongue of the wagon breaks.",
+				"category":	["Wagon & Animals"],
+				"group":	["singleplayer"],
+				"parameters":	{
+					"part":	{
+						"type":	"options",
+						"name":	"Part",
+						"options":	{
+							"wheel":	{
+								"name":	"A Wheel"
+							},
+							"axle":	{
+								"name":	"An Axle"
+							},
+							"tongue":	{
+								"name":	"The Tongue"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.300000011920929,
+					"morality":	-0.600000023841858
+				}
+			},
+			"tipped_wagon":	{
+				"name":	"Tip Over the Wagon",
+				"price":	250,
+				"description":	"The wagon tips over and some supplies are lost.",
+				"category":	["Wagon & Animals"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0.20000000298023224,
+					"morality":	-0.5
+				}
+			},
+			"ox_missing":	{
+				"name":	"An Animal Wanders Off",
+				"price":	250,
+				"description":	"One of the draft animals goes missing.",
+				"category":	["Wagon & Animals"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0.300000011920929,
+					"morality":	-0.600000023841858
+				}
+			},
+			"ox_dies":	{
+				"name":	"An Animal Dies",
+				"price":	400,
+				"description":	"One of the draft animals dies.",
+				"category":	["Wagon & Animals"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0.5,
+					"morality":	-0.800000011920929
+				}
+			},
+			"give_ox":	{
+				"name":	"Give an Ox",
+				"price":	250,
+				"description":	"An ox joins the team.",
+				"category":	["Wagon & Animals"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0.5,
+					"morality":	0.600000023841858
+				}
+			},
+			"force_pace":	{
+				"name":	"Force the Pace",
+				"price":	100,
+				"description":	"The party has to travel at the pace of your choice for a while.",
+				"category":	["Travel"],
+				"group":	["singleplayer"],
+				"duration":	{
+					"value":	60
+				},
+				"parameters":	{
+					"pace":	{
+						"type":	"options",
+						"name":	"Pace",
+						"options":	{
+							"steady":	{
+								"name":	"Steady (8 Hours a Day)"
+							},
+							"strenuous":	{
+								"name":	"Strenuous (10 Hours a Day)"
+							},
+							"grueling":	{
+								"name":	"Grueling (Exhausting)"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.300000011920929,
+					"morality":	-0.20000000298023224
+				}
+			},
+			"force_rations":	{
+				"name":	"Force the Rations",
+				"price":	100,
+				"description":	"The party has to eat the rations of your choice for a while.",
+				"category":	["Travel"],
+				"group":	["singleplayer"],
+				"duration":	{
+					"value":	60
+				},
+				"parameters":	{
+					"rations":	{
+						"type":	"options",
+						"name":	"Rations",
+						"options":	{
+							"filling":	{
+								"name":	"Filling"
+							},
+							"meager":	{
+								"name":	"Meager"
+							},
+							"bare_bones":	{
+								"name":	"Bare Bones"
+							}
+						}
+					}
+				},
+				"alignment":	{
+					"orderliness":	0.300000011920929,
+					"morality":	-0.20000000298023224
+				}
+			},
+			"rest":	{
+				"name":	"Rest",
+				"price":	50,
+				"description":	"The party stops to rest for some days.",
+				"category":	["Travel"],
+				"group":	["singleplayer"],
+				"quantity":	{
+					"min":	1,
+					"max":	7
+				},
+				"alignment":	{
+					"orderliness":	0.40000000596046448,
+					"morality":	0
+				}
+			},
+			"find_wild_fruit":	{
+				"name":	"Find Wild Fruit",
+				"price":	50,
+				"description":	"The party comes upon wild fruit.",
+				"category":	["Trail Events"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0,
+					"morality":	0.5
+				}
+			},
+			"find_wild_vegetables":	{
+				"name":	"Find Wild Vegetables",
+				"price":	50,
+				"description":	"The party comes upon wild vegetables.",
+				"category":	["Trail Events"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0,
+					"morality":	0.5
+				}
+			},
+			"find_abandoned_wagon":	{
+				"name":	"Find an Abandoned Wagon",
+				"price":	100,
+				"description":	"An abandoned wagon by the trail: search it?",
+				"category":	["Trail Events"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0,
+					"morality":	0.40000000596046448
+				}
+			},
+			"random_good_event":	{
+				"name":	"Random Good Event",
+				"price":	75,
+				"description":	"Something good happens on the trail: fish, fruit, a celebration...",
+				"category":	["Trail Events"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0,
+					"morality":	0.5
+				}
+			},
+			"blizzard":	{
+				"name":	"Blizzard",
+				"price":	250,
+				"description":	"A blizzard hits the party.",
+				"category":	["Trail Events"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0,
+					"morality":	-0.5
+				}
+			},
+			"prairie_fire":	{
+				"name":	"Prairie Fire",
+				"price":	250,
+				"description":	"A prairie fire comes toward the party.",
+				"category":	["Trail Events"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0,
+					"morality":	-0.600000023841858
+				}
+			},
+			"buffalo_stampede":	{
+				"name":	"Buffalo Stampede",
+				"price":	250,
+				"description":	"A buffalo herd stampedes toward the wagon.",
+				"category":	["Trail Events"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0,
+					"morality":	-0.600000023841858
+				}
+			},
+			"wagon_fire":	{
+				"name":	"Wagon Fire",
+				"price":	300,
+				"description":	"The wagon catches fire.",
+				"category":	["Trail Events"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0,
+					"morality":	-0.699999988079071
+				}
+			},
+			"locusts":	{
+				"name":	"Locusts",
+				"price":	200,
+				"description":	"A swarm of locusts descends on the party.",
+				"category":	["Trail Events"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0,
+					"morality":	-0.5
+				}
+			},
+			"random_bad_event":	{
+				"name":	"Random Bad Event",
+				"price":	150,
+				"description":	"Something goes wrong on the trail: a storm, fog, mud, a broken yoke...",
+				"category":	["Trail Events"],
+				"group":	["singleplayer"],
+				"alignment":	{
+					"orderliness":	0,
+					"morality":	-0.40000000596046448
+				}
+			}
+		}
+	}
+}
