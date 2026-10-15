@@ -10,3 +10,6 @@ I have many versions of Oregon Trail II now, and they all work, except the demo 
 
 ## Building
 Needs c++ build tools, that's it. Just run nmake, check the makefile for optional stuff.
+
+## Releases
+Can be found at https://oregontrail.me
