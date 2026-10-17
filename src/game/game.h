@@ -193,6 +193,7 @@ struct game {
 	struct end_game *end_score;
 	int32_t score_multiplier;
 	int32_t scenery_switch;
+	bool crossing_river;
 };
 
 #define GAME_OPS(p) ((const struct game_ops *) ((const struct object *) (p))->ops)

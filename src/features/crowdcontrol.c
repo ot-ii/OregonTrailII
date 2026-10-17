@@ -543,6 +543,8 @@ static const char *not_now(void)
 		return "The game is showing an event";
 	if (g->travel_state == TRAVEL_RESTING)
 		return "The party is resting";
+	if (g->crossing_river)
+		return "The party is crossing a river";
 	if (NodeBaseGetId(g->cur_node) == NODE_KIND_TRAIL && NodeGetTerrain((struct node *) g->cur_node) == TERRAIN_RAFT)
 		return "The party is rafting";
 
