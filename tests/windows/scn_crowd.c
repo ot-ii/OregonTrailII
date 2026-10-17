@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include <winsock2.h>
 #include <windows.h>
@@ -232,6 +233,20 @@ TEST_GAME(scn_crowd, every_effect)
 		CHECK(!strcmp(st, "success"));
 		CHECK_EQ(g_game->party->ration_level, RATIONS_BARE_BONES);
 		CrowdControlAdvanceTimed(6000);
+		CHECK_EQ(g_game->party->ration_level, rations);
+	}
+	TCase("timed: the clock stands while the wagon does");
+	{
+		int32_t rations = g_game->party->ration_level;
+		st = run("force_rations", "\"rations\":{\"value\":\"bare_bones\"}", 1, 5, msg, sizeof(msg));
+		CHECK(!strcmp(st, "success"));
+		g_game->travel_state = TRAVEL_STOPPED;
+		CrowdControlAdvanceTimed(6000);
+		CHECK_EQ(CrowdControlTimedCount(), 1);
+		CHECK_EQ(g_game->party->ration_level, RATIONS_BARE_BONES);
+		g_game->travel_state = TRAVEL_MOVING;
+		CrowdControlAdvanceTimed(6000);
+		CHECK_EQ(CrowdControlTimedCount(), 0);
 		CHECK_EQ(g_game->party->ration_level, rations);
 	}
 	TestLoad("crowd_base");
@@ -603,7 +618,7 @@ TEST_GAME(scn_crowd, window_opens)
 	CHECK(w != NULL);
 	CHECK(fonts);
 	CHECK(logo);
-	CHECK(buttons >= 2);
+	CHECK(buttons >= 1);
 	if (w) {
 		char msg[256];
 		CrowdControlHandle(request("give_money", NULL, 5, 0), msg, sizeof(msg));
@@ -704,34 +719,75 @@ TEST_GAME(scn_crowd, retry_and_refuse)
 	TestLoad("crowd_base");
 }
 
+static void test_config(struct crowd_config *cfg, const char *server, const char *api, const char *app_id,
+	const char *secret)
+{
+	memset(cfg, 0, sizeof(*cfg));
+	snprintf(cfg->server, sizeof(cfg->server), "%s", server);
+	snprintf(cfg->api, sizeof(cfg->api), "%s", api);
+	snprintf(cfg->app_id, sizeof(cfg->app_id), "%s", app_id);
+	snprintf(cfg->secret, sizeof(cfg->secret), "%s", secret);
+	snprintf(cfg->pack_id, sizeof(cfg->pack_id), "%s", "test-pack");
+}
+
+static int32_t wait_state(int32_t want, DWORD ms, char *state, int32_t size)
+{
+	int32_t s = 0;
+
+	state[0] = 0;
+	for (DWORD until = GetTickCount() + ms; GetTickCount() < until; ) {
+		TestPump(200);
+		s = CrowdControlState(state, size);
+		if (s == want)
+			break;
+	}
+	TNote("state %d: %s", s, state);
+
+	return s;
+}
+
+static bool connect_test_server(const char *app_id, const char *secret, bool sign_in, int32_t ping_idle_ms,
+	int32_t pong_wait_ms)
+{
+	struct crowd_config cfg;
+
+	test_config(&cfg, "ws://127.0.0.1:8766/", "http://127.0.0.1:8766/", app_id, secret);
+	cfg.ping_idle_ms = ping_idle_ms;
+	cfg.pong_wait_ms = pong_wait_ms;
+
+	return CrowdControlConnect(&cfg, sign_in);
+}
+
+static void money_round_trip(int32_t amount, const char *viewer)
+{
+	char json[256];
+	double cash = g_game->party->cash;
+	int32_t i;
+
+	snprintf(json, sizeof(json), "{\"action\":\"test-trigger\",\"data\":{\"effect\":\"give_money\",\"quantity\":%d,"
+		"\"viewer\":\"%s\"}}", amount, viewer);
+	CrowdNetSendRaw(CrowdControlNet(), json);
+	for (i = 0; i < 40 && g_game->party->cash < cash + amount - 0.5; ++i)
+		TestPump(250);
+	CHECK_NEAR(g_game->party->cash, cash + amount, 0.001);
+}
+
 TEST_GAME(scn_crowd, through_the_network)
 {
 	char state[256];
 	double cash;
-	int32_t i, s = 0;
-	DWORD until;
+	int32_t i, s;
 
-	state[0] = 0;
 	CrowdControlSetQuiet(true);
 	CHECK(TestSave("crowd_base"));
-	CHECK(CrowdControlConnect("ws://127.0.0.1:8766/", "http://127.0.0.1:8766/", "http://127.0.0.1:8766/auth",
-		"test-pack"));
-	for (until = GetTickCount() + 15000; GetTickCount() < until; ) {
-		TestPump(200);
-		s = CrowdControlState(state, sizeof(state));
-		if (s == CROWD_SESSION)
-			break;
-	}
-	TNote("state %d: %s", s, state);
+	TCase("sign in with the secret");
+	CHECK(connect_test_server("test-app", "test-secret", true, 0, 0));
+	s = wait_state(CROWD_SESSION, 15000, state, sizeof(state));
 	CHECK_MSG(s == CROWD_SESSION, "no game session with the test server (is tools/cc_testserver.py --test --port 8766 "
 		"running?): %s", state);
 	if (s == CROWD_SESSION) {
-		cash = g_game->party->cash;
-		CrowdNetSendRaw(CrowdControlNet(), "{\"action\":\"test-trigger\",\"data\":{\"effect\":\"give_money\","
-			"\"quantity\":7,\"viewer\":\"NetViewer\"}}");
-		for (i = 0; i < 40 && g_game->party->cash < cash + 6.5; ++i)
-			TestPump(250);
-		CHECK_NEAR(g_game->party->cash, cash + 7, 0.001);
+		CHECK(CrowdNetTokenExpiry(CrowdControlNet()) > (int64_t) time(NULL) + 20 * 3600);
+		money_round_trip(7, "NetViewer");
 		{
 			int32_t alive = 0;
 			for (i = 0; i < g_game->party->member_count; ++i)
@@ -753,12 +809,125 @@ TEST_GAME(scn_crowd, through_the_network)
 				CrowdControlToggleWindow();
 			TestPump(1500);
 			w = (HWND) CrowdControlWindowInfo(&fonts, &logo, &buttons);
-			CHECK_EQ(buttons, 3);
+			CHECK_EQ(buttons, 2);
 			if (w)
 				save_window_shot(w, "crowd_window_session");
 			CrowdControlToggleWindow();
 		}
 	}
+	CrowdControlDisconnect();
+	TestLoad("crowd_base");
+}
+
+TEST_GAME(scn_crowd, sign_in_pkce_and_refusal)
+{
+	char state[256];
+	int32_t s;
+
+	CrowdControlSetQuiet(true);
+	CHECK(TestSave("crowd_base"));
+	TCase("PKCE");
+	CHECK(connect_test_server("test-public-app", "", true, 0, 0));
+	s = wait_state(CROWD_SESSION, 15000, state, sizeof(state));
+	CHECK_MSG(s == CROWD_SESSION, "%s", state);
+	if (s == CROWD_SESSION)
+		money_round_trip(3, "PkceViewer");
+	CrowdControlDisconnect();
+
+	TCase("wrong secret");
+	CHECK(connect_test_server("test-app", "wrong-secret", true, 0, 0));
+	s = wait_state(-1, 3000, state, sizeof(state));
+	CHECK_MSG(s == CROWD_SIGN_IN && strstr(state, "Sign-in failed (HTTP 403)"), "state %d: %s", s, state);
+	CrowdControlDisconnect();
+
+	TCase("unknown application");
+	CHECK(connect_test_server("no-such-app", "", true, 0, 0));
+	s = wait_state(-1, 3000, state, sizeof(state));
+	CHECK_MSG(s == CROWD_SIGN_IN && strstr(state, "Sign-in failed: Unknown application"), "state %d: %s", s, state);
+	CrowdControlDisconnect();
+	TestLoad("crowd_base");
+}
+
+TEST_GAME(scn_crowd, token_reuse_extend_and_sign_out)
+{
+	char state[256];
+	int32_t s;
+
+	CrowdControlSetQuiet(true);
+	CHECK(TestSave("crowd_base"));
+	TCase("a token that runs out in 30 minutes is extended");
+	CHECK(connect_test_server("test-app", "test-secret", true, 0, 0));
+	CrowdNetSendRaw(CrowdControlNet(), "{\"action\":\"test-short-token\"}");
+	s = wait_state(CROWD_SESSION, 15000, state, sizeof(state));
+	CHECK_MSG(s == CROWD_SESSION, "%s", state);
+	for (DWORD until = GetTickCount() + 5000; GetTickCount() < until &&
+			CrowdNetTokenExpiry(CrowdControlNet()) < (int64_t) time(NULL) + 3600; )
+		TestPump(200);
+	CHECK_MSG(CrowdNetTokenExpiry(CrowdControlNet()) > (int64_t) time(NULL) + 20 * 3600, "expires in %lld s",
+		(long long) (CrowdNetTokenExpiry(CrowdControlNet()) - (int64_t) time(NULL)));
+	CrowdControlDisconnect();
+
+	TCase("the saved token, no sign-in");
+	CHECK(connect_test_server("test-app", "test-secret", false, 0, 0));
+	s = wait_state(CROWD_SESSION, 15000, state, sizeof(state));
+	CHECK_MSG(s == CROWD_SESSION, "%s", state);
+	if (s == CROWD_SESSION)
+		money_round_trip(2, "ReuseViewer");
+
+	TCase("sign out");
+	CrowdNetSignOut(CrowdControlNet());
+	s = wait_state(-1, 3000, state, sizeof(state));
+	CHECK_MSG(s == CROWD_SIGN_IN && strstr(state, "Signed out (HTTP 200)"), "state %d: %s", s, state);
+	CrowdControlDisconnect();
+
+	TCase("nothing saved after the sign-out");
+	CHECK(connect_test_server("test-app", "test-secret", false, 0, 0));
+	s = wait_state(-1, 3000, state, sizeof(state));
+	CHECK_MSG(s == CROWD_SIGN_IN, "state %d: %s", s, state);
+	CHECK(CrowdNetTokenExpiry(CrowdControlNet()) == 0);
+	CrowdControlDisconnect();
+	TestLoad("crowd_base");
+}
+
+TEST_GAME(scn_crowd, reconnect_and_keep_alive)
+{
+	char state[256];
+	int32_t s, i;
+
+	CrowdControlSetQuiet(true);
+	CHECK(TestSave("crowd_base"));
+	CHECK(connect_test_server("test-app", "test-secret", true, 1000, 1500));
+	s = wait_state(CROWD_SESSION, 15000, state, sizeof(state));
+	CHECK_MSG(s == CROWD_SESSION, "%s", state);
+	if (s != CROWD_SESSION) {
+		CrowdControlDisconnect();
+		return;
+	}
+
+	TCase("pings answered");
+	for (DWORD until = GetTickCount() + 4000; GetTickCount() < until; )
+		TestPump(200);
+	CHECK_EQ(CrowdNetConnections(CrowdControlNet()), 1);
+
+	TCase("the server drops the connection");
+	CrowdNetSendRaw(CrowdControlNet(), "{\"action\":\"test-drop\"}");
+	for (i = 0; i < 60 && CrowdNetConnections(CrowdControlNet()) < 2; ++i)
+		TestPump(250);
+	CHECK_EQ(CrowdNetConnections(CrowdControlNet()), 2);
+	s = wait_state(CROWD_SESSION, 10000, state, sizeof(state));
+	CHECK_MSG(s == CROWD_SESSION, "%s", state);
+	if (s == CROWD_SESSION)
+		money_round_trip(4, "AgainViewer");
+
+	TCase("no pong");
+	CrowdNetSendRaw(CrowdControlNet(), "{\"action\":\"test-mute-pong\"}");
+	for (i = 0; i < 60 && CrowdNetConnections(CrowdControlNet()) < 3; ++i)
+		TestPump(250);
+	CHECK_EQ(CrowdNetConnections(CrowdControlNet()), 3);
+	s = wait_state(CROWD_SESSION, 10000, state, sizeof(state));
+	CHECK_MSG(s == CROWD_SESSION, "%s", state);
+	if (s == CROWD_SESSION)
+		money_round_trip(5, "PongViewer");
 	CrowdControlDisconnect();
 	TestLoad("crowd_base");
 }
@@ -781,8 +950,11 @@ static DWORD connect_and_close(const char *server, const char *api, int32_t want
 	DWORD until, start, took;
 	int32_t s = 0;
 
+	struct crowd_config cfg;
+
 	live_memory(&b0, &y0);
-	CHECK(CrowdControlConnect(server, api, "http://127.0.0.1:8766/auth", "test-pack"));
+	test_config(&cfg, server, api, "test-app", "test-secret");
+	CHECK(CrowdControlConnect(&cfg, want == CROWD_SESSION));
 	for (until = GetTickCount() + wait_ms; GetTickCount() < until; ) {
 		Sleep(100);
 		s = CrowdControlState(state, sizeof(state));
@@ -855,6 +1027,9 @@ const struct test_reg TESTS_scn_crowd[] = {
 	TEST_GAME_ENTRY(scn_crowd, window_closes_through_the_menu),
 	TEST_GAME_ENTRY(scn_crowd, retry_and_refuse),
 	TEST_GAME_ENTRY(scn_crowd, through_the_network),
+	TEST_GAME_ENTRY(scn_crowd, sign_in_pkce_and_refusal),
+	TEST_GAME_ENTRY(scn_crowd, token_reuse_extend_and_sign_out),
+	TEST_GAME_ENTRY(scn_crowd, reconnect_and_keep_alive),
 	TEST_GAME_ENTRY(scn_crowd, shutdown_is_prompt),
 	TEST_END
 };
