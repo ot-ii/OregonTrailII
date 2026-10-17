@@ -24,6 +24,7 @@ struct combo_box {
 	int32_t field_8C;
 	int32_t field_90;
 	int32_t drop_height_extra;
+	bool disabled;
 };
 
 #define COMBO_BOX_OPS(p) ((const struct combo_box_ops *) ((const struct object *) (p))->ops)
@@ -45,6 +46,7 @@ void combo_box_create_or_destroy(struct control *self, struct window *parent);
 
 void ComboBoxAddItem(struct combo_box *self, struct cstr *item);
 void ComboBoxSetList(struct combo_box *self, struct strrsrc *new_items, int32_t value);
+void ComboBoxSetEnabled(struct combo_box *self, bool enabled);
 intptr_t ComboBoxHandleKeydown(struct combo_box *self, void *hwnd, uint32_t msg, uintptr_t wparam, intptr_t lparam);
 
 struct view *ComboCreateFromDesc(struct ctrl_desc *desc);

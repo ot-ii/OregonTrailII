@@ -252,6 +252,8 @@ void combo_box_create_or_destroy(struct control *self, struct window *parent)
 
 		self->orig_wndproc = (void *) SetWindowLongPtrA(hwnd, GWLP_WNDPROC, (LONG_PTR) combo_subclass_wndproc);
 		g_combo_prevproc = (WNDPROC) self->orig_wndproc;
+		if (cb->disabled)
+			EnableWindow(hwnd, FALSE);
 
 	} else if (self->hwnd) {
 		HWND hwnd = (HWND) self->hwnd;
@@ -292,6 +294,14 @@ void ComboBoxSetList(struct combo_box *self, struct strrsrc *new_items, int32_t 
 	}
 
 	CONTROL_OPS(self)->SetValue(&self->base, value, true);
+}
+
+void ComboBoxSetEnabled(struct combo_box *self, bool enabled)
+{
+	self->disabled = !enabled;
+
+	if (self->base.hwnd)
+		EnableWindow((HWND) self->base.hwnd, enabled);
 }
 
 void combo_box_on_command(struct control *self, void *parent_hwnd, int32_t id, void *ctrl_hwnd, int32_t notify)

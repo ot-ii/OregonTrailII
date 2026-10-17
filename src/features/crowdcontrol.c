@@ -10,12 +10,14 @@
 
 #include "../game/ailment.h"
 #include "../app/app.h"
+#include "../ui/combobox.h"
 #include "crowdnet.h"
 #include "crowdcontrolconfig.h"
 #include "../base/cstr.h"
 #include "../app/event.h"
 #include "../app/evthandler.h"
 #include "../base/file.h"
+#include "../ui/framewin.h"
 #include "../game/game.h"
 #include "../game/gamecmd.h"
 #include "../data/gfxdev.h"
@@ -39,6 +41,7 @@
 #include "../data/strrsrc.h"
 #include "../app/version.h"
 #include "../game/weather.h"
+#include "../ui/window.h"
 #include "../base/memory.h"
 #include "../third_party/mty_json.h"
 
@@ -1469,8 +1472,29 @@ static struct outcome handle_request(const char *json)
 	return o;
 }
 
+static void sync_list(int32_t id, enum param_kind kind, int32_t value)
+{
+	struct control *c = g_parent_win ? WindowFindCtrlById((struct window *) g_parent_win, id) : NULL;
+	bool forced = false;
+
+	if (!c || c->control_type != CTRL_COMBOBOX)
+		return;
+
+	for (int32_t i = 0; i < g_timed_count; ++i)
+		if (g_timed[i].kind == kind)
+			forced = true;
+
+	if (((struct combo_box *) c)->disabled != forced)
+		ComboBoxSetEnabled((struct combo_box *) c, !forced);
+
+	if (c->value != value)
+		CONTROL_OPS(c)->SetValue(c, value, false);
+}
+
 static void step_timed(int32_t ms)
 {
+	bool was_forcing = g_timed_count > 0;
+
 	for (int32_t i = 0; i < g_timed_count; ) {
 		struct timed *t = &g_timed[i];
 		bool now_paused = not_now() != NULL;
@@ -1508,6 +1532,11 @@ static void step_timed(int32_t ms)
 			continue;
 		}
 		++i;
+	}
+
+	if (was_forcing && game() && game()->party) {
+		sync_list(9013, P_PACE, game()->travel_pace);
+		sync_list(9014, P_RATIONS, game()->party->ration_level);
 	}
 }
 
