@@ -467,6 +467,8 @@ void OtiiAppPlayMusic(struct otii_app *self, int32_t track, bool loop)
 	self->music_situation = 0;
 	if (track == 0 || self->music_track == track)
 		return;
+
+	self->music_loop = true;
 	if (self->cue_rsrc)
 		RsrcDestroy(&self->cue_rsrc);
 	self->cue_rsrc = NULL;
@@ -508,17 +510,40 @@ void OtiiAppStopMusic(struct otii_app *self)
 	self->music_track = 0;
 }
 
+static void restart_music(struct otii_app *self)
+{
+	int32_t track = self->music_track;
+
+	OtiiAppStopMusic(self);
+	self->music_track = 0;
+	if (self->cue_rsrc && self->music_situation > 0) {
+		int32_t cue = self->music_situation;
+
+		self->music_situation = 0;
+		OtiiAppPlayMusicCue(self, cue);
+
+	} else if (track < 0) {
+		if (GetGameObj() && GetGameObj()->cur_node)
+			OtiiAppPlayPoolMusic(self, -track);
+
+	} else if (track > 0) {
+		OtiiAppPlayMusic(self, track, self->music_loop);
+	}
+}
+
 void OtiiAppSetMusicEnabled(struct otii_app *self, int32_t on)
 {
 	if (SettingsMusicOn(self->settings) == on)
 		return;
 	SettingsSetFlag19(self->settings, on);
 	if (on) {
-		self->music_track = 0;
-		OtiiAppPlayMusic(self, 0, false);
+		restart_music(self);
 
 	} else {
+		int32_t track = self->music_track;
+
 		OtiiAppStopMusic(self);
+		self->music_track = track;
 	}
 }
 

@@ -105,6 +105,7 @@ struct otii_app {
 	int32_t music_end_cue;
 	int32_t music_track;
 	struct snd_obj *music_stream;
+	bool music_loop;
 	int32_t speech_id;
 	struct snd_obj *speech_stream;
 	int32_t sfx_id;

@@ -1849,6 +1849,7 @@ void game_river_crossing(struct game *self, struct cmd_event *evt)
 	EVT_HANDLER_OPS(self)->SetHandledFor(&self->base, &handled_ev_m);
 	VIEW_OPS(g_active_scene)->RemoveFromParent(g_active_scene);
 	ObjectDelete(g_active_scene);
+	self->crossing_river = false;
 	sound_server_resume();
 	GameUpdateMusic(self, 0);
 	EvtHandlerReleaseBinding(&self->base, 1, &handler_j);
@@ -2482,6 +2483,7 @@ void GameRiverCrossingAttempt(struct game *self, int32_t method, int32_t node_id
 	int32_t scene_id_h = LNodeSelectCrossingPicture((struct lnode *) self->cur_node, g_river_method,
 		g_crossing_outcome, self->scenery_switch != 0);
 	sound_server_pause();
+	self->crossing_river = true;
 	redraw_parent();
 	struct view *cv = (struct view *) crossing_view;
 	struct rect bounds = VIEW_OPS(cv)->GetBounds(cv);

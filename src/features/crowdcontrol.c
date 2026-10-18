@@ -543,6 +543,8 @@ static const char *not_now(void)
 		return "The game is showing an event";
 	if (g->travel_state == TRAVEL_RESTING)
 		return "The party is resting";
+	if (g->crossing_river)
+		return "The party is crossing a river";
 	if (NodeBaseGetId(g->cur_node) == NODE_KIND_TRAIL && NodeGetTerrain((struct node *) g->cur_node) == TERRAIN_RAFT)
 		return "The party is rafting";
 
@@ -1491,13 +1493,21 @@ static void sync_list(int32_t id, enum param_kind kind, int32_t value)
 		CONTROL_OPS(c)->SetValue(c, value, false);
 }
 
+static bool wagon_moving(void)
+{
+	struct otii_app *app = otii_app();
+	struct game *g = game();
+
+	return app && g && app->app_state == APP_STATE_TRAVELING && g->travel_state == TRAVEL_MOVING;
+}
+
 static void step_timed(int32_t ms)
 {
 	bool was_forcing = g_timed_count > 0;
 
 	for (int32_t i = 0; i < g_timed_count; ) {
 		struct timed *t = &g_timed[i];
-		bool now_paused = not_now() != NULL;
+		bool now_paused = not_now() != NULL || !wagon_moving();
 
 		if (now_paused != t->paused) {
 			t->paused = now_paused;
