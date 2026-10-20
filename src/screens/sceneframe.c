@@ -249,13 +249,35 @@ static void build_hotspot(struct scene_frame *self, const uint8_t *scene_data, i
 		set_cursor(button, hot.cursor + CURSOR_SCENE_BASE);
 }
 
+int32_t SceneFrameHeadlineIndex(struct strrsrc *headlines, int32_t day_number)
+{
+	int32_t line_count = StrRsrcCount(headlines);
+	int32_t line_day = 0;
+
+	if (line_count == 0)
+		return -1;
+
+	sscanf(StrRsrcGetAt(headlines, 0), "%d", &line_day);
+
+	if (day_number < line_day)
+		return -1;
+
+	for (int32_t line_index = 1; line_index < line_count; line_index++) {
+		sscanf(StrRsrcGetAt(headlines, line_index), "%d", &line_day);
+
+		if (day_number < line_day)
+			return line_index - 1;
+	}
+
+	return line_count - 1;
+}
+
 static void build_newspaper(struct scene_frame *self, const struct scene_record *scene)
 {
 	char date_buf[52];
 	struct rect date_rect = RectMake(53, 185, 66, 406);
 	struct rect headline_rect = RectMake(72, 185, 119, 406);
 	struct cstr *text;
-	int32_t line_day = 0;
 
 	struct strrsrc *headlines = StrRsrcLoad(g_text_lib, 910, true);
 	SceneFrameBuildBackdrop(self, scene, scene->picture);
@@ -276,33 +298,12 @@ static void build_newspaper(struct scene_frame *self, const struct scene_record 
 		text = CStrCreateFrom("Dr. Wayne Studer Accused of Software Design!");
 
 	} else {
-		int32_t headline_index = 0;
 		StrRsrcRemapHighChars(headlines, 0);
-		int32_t line_count = StrRsrcCount(headlines);
+		int32_t headline_index = SceneFrameHeadlineIndex(headlines, day_number);
 
-		if (line_count) {
-			sscanf(StrRsrcGetAt(headlines, 0), "%d", &line_day);
-			int32_t start_index = (day_number - line_day) / 7 - 20;
-
-			if (start_index < 1)
-				start_index = 1;
-
-			for (int32_t line_index = start_index; StrRsrcCount(headlines) > line_index; line_index++) {
-				sscanf(StrRsrcGetAt(headlines, line_index), "%d", &line_day);
-
-				if (day_number < line_day) {
-					headline_index = line_index - 1;
-					line_index = StrRsrcCount(headlines);
-				}
-			}
-
-			if (headline_index) {
-				text = StrRsrcGetCStr(headlines, headline_index);
-				CStrSubstr(text, 8, 999);
-
-			} else {
-				text = CStrCreateFrom("Dr. Wayne Studer Accused of Software Design!");
-			}
+		if (headline_index >= 0) {
+			text = StrRsrcGetCStr(headlines, headline_index);
+			CStrSubstr(text, 8, 999);
 
 		} else {
 			text = CStrCreateFrom("Dr. Wayne Studer Accused of Software Design!");
