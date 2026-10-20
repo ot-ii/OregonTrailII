@@ -14,6 +14,8 @@
 #include "../../src/app/otiiapp.h"
 #include "../../src/data/dataversion.h"
 #include "../../src/data/docfile.h"
+#include "../../src/data/gfxdev.h"
+#include "../../src/data/strrsrc.h"
 #include "../../src/dialogs/quickstartdlg.h"
 #include "../../src/features/autopilot.h"
 #include "../../src/features/controlstate.h"
@@ -397,7 +399,51 @@ TEST_GAME(scn_towns, force_save_in_town)
 	TCase("");
 }
 
+static int32_t headline_day(struct strrsrc *headlines, int32_t index)
+{
+	int32_t day = 0;
+
+	sscanf(StrRsrcGetAt(headlines, index), "%d", &day);
+	return day;
+}
+
+TEST(scn_towns, newspaper_headlines)
+{
+	struct strrsrc *headlines = g_text_lib ? StrRsrcLoad(g_text_lib, 910, false) : NULL;
+
+	CHECK(headlines != NULL);
+	if (!headlines)
+		return;
+
+	int32_t count = StrRsrcCount(headlines);
+	CHECK(count > 1);
+	if (count > 1) {
+		int32_t first = headline_day(headlines, 0);
+		int32_t last = headline_day(headlines, count - 1);
+		int32_t bad = 0;
+
+		CHECK_EQ(SceneFrameHeadlineIndex(headlines, first - 1), -1);
+		CHECK_EQ(SceneFrameHeadlineIndex(headlines, first), 0);
+		CHECK_EQ(SceneFrameHeadlineIndex(headlines, last), count - 1);
+		CHECK_EQ(SceneFrameHeadlineIndex(headlines, last + 400), count - 1);
+		CHECK(strstr(StrRsrcGetAt(headlines, count - 1), "Little Green Men") != NULL);
+
+		for (int32_t day = first; day <= last + 31; day++) {
+			int32_t index = SceneFrameHeadlineIndex(headlines, day);
+
+			if (index < 0 || headline_day(headlines, index) > day ||
+				(index + 1 < count && headline_day(headlines, index + 1) <= day)) {
+				if (bad++ < 5)
+					CHECK_MSG(0, "day %d: headline %d", day, index);
+			}
+		}
+		CHECK_EQ(bad, 0);
+	}
+	StrRsrcDestroy(&headlines);
+}
+
 const struct test_reg TESTS_scn_towns[] = {
+	TEST_ENTRY(scn_towns, newspaper_headlines),
 	TEST_GAME_ENTRY(scn_towns, quick_start_no_package),
 	TEST_GAME_ENTRY(scn_towns, quick_start_no_package_then_leave),
 	TEST_GAME_ENTRY(scn_towns, quick_start_next_town),

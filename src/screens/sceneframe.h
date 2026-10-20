@@ -10,6 +10,7 @@ struct assets;
 struct cmd_event;
 struct inv_list;
 struct rsrc;
+struct strrsrc;
 
 enum {
 	SCENE_HEADER_WORDS = 16,
@@ -97,6 +98,7 @@ void scene_frame_destroy(struct object *self);
 struct rsrc *SceneFrameBuildSceneView(struct scene_frame *self, int32_t node_id);
 void SceneFrameBuildBackdrop(struct scene_frame *self, const struct scene_record *scene, int32_t flag);
 int32_t SceneFrameEventCodeToMsgId(struct scene_frame *self, int32_t event_code);
+int32_t SceneFrameHeadlineIndex(struct strrsrc *headlines, int32_t day_number);
 
 void SceneFrameBuySupplyPackage(struct scene_frame *self);
 
