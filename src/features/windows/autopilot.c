@@ -3092,8 +3092,8 @@ static int32_t raft_sim_step(struct ford_wagon *raft, struct raft_state *s, doub
 		turn = heading < target ? 5 : heading > target ? -5 : 0;
 
 	a = heading / 360.0 * g_pi;
-	step_h = (int16_t) (sin(a) * speed);
-	step_v = (int16_t) (cos(a) * speed);
+	step_h = (int16_t) (cos(a) * speed);
+	step_v = (int16_t) (sin(a) * speed);
 
 	raft_rect(s, &rc);
 	cent_h = rc.left + (rc.right - rc.left) / 2;

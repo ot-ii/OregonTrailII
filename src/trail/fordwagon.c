@@ -95,6 +95,21 @@ static void to_cells(struct rect *r)
 	r->right /= 16;
 }
 
+static void clip_to_grid(struct ford_wagon *self, struct rect *r)
+{
+	if (r->left < 0)
+		r->left = 0;
+
+	if (r->top < 0)
+		r->top = 0;
+
+	if (r->right > (int32_t) self->grid_w)
+		r->right = (int32_t) self->grid_w;
+
+	if (r->bottom > (int32_t) self->grid_h)
+		r->bottom = (int32_t) self->grid_h;
+}
+
 static void scroll_to_raft(struct ford_wagon *self, struct point hot_spot)
 {
 	struct tile_map *map = root_map(self);
@@ -231,8 +246,8 @@ static void steer(struct ford_wagon *self, int32_t speed_k, bool *stop)
 	}
 
 	angle_n = self->heading / 360.0 * g_pi;
-	int32_t step_h_g = (int32_t) (sin(angle_n) * speed_k);
-	int32_t step_v_h = (int32_t) (cos(angle_n) * speed_k);
+	int32_t step_h_g = (int32_t) (cos(angle_n) * speed_k);
+	int32_t step_v_h = (int32_t) (sin(angle_n) * speed_k);
 	self->velocity = 0.0;
 	self->drift_v = self->velocity;
 	self->drift_h = self->drift_v;
@@ -449,23 +464,23 @@ bool FordWagonCanMove(struct ford_wagon *self, int32_t dx, int32_t dy)
 	if (RectContains(&map->map_rect, &moved_rect_d))
 		return false;
 
+	if ((dx < 0 && moved_rect_d.left < 0) || (dy < 0 && moved_rect_d.top < 0) ||
+		(dx > 0 && moved_rect_d.right > 16 * (int32_t) self->grid_w) ||
+		(dy > 0 && moved_rect_d.bottom > 16 * (int32_t) self->grid_h))
+		return false;
+
 	to_cells(&moved_rect_d);
+	clip_to_grid(self, &moved_rect_d);
 
-	int32_t row_start_j = moved_rect_d.top * (int32_t) self->grid_w + moved_rect_d.left;
+	for (int32_t cell_row_e = moved_rect_d.top; cell_row_e < moved_rect_d.bottom; cell_row_e++) {
+		int32_t cell_ptr_g = cell_row_e * (int32_t) self->grid_w + moved_rect_d.left;
 
-	for (uint32_t cell_row_e = (uint16_t) moved_rect_d.top; moved_rect_d.bottom > (int32_t) cell_row_e;
-		cell_row_e = (uint16_t) (cell_row_e + 1)) {
-		int32_t cell_ptr_g = row_start_j;
-
-		for (uint32_t cell_col_g = (uint16_t) moved_rect_d.left; moved_rect_d.right > (int32_t) cell_col_g;
-			cell_col_g = (uint16_t) (cell_col_g + 1)) {
+		for (int32_t cell_col_g = moved_rect_d.left; cell_col_g < moved_rect_d.right; cell_col_g++) {
 			uint32_t tile_o = grid_cell(self, cell_ptr_g++);
 
 			if (tile_o == RAFT_LAND || tile_o >= RAFT_SHORE_FIRST)
 				return false;
 		}
-
-		row_start_j += (int32_t) self->grid_w;
 	}
 
 	return true;
@@ -501,15 +516,12 @@ bool FordWagonCheckCollision(struct ford_wagon *self)
 
 	struct rect pixel_rect_g = cell_rect_i;
 	to_cells(&cell_rect_i);
+	clip_to_grid(self, &cell_rect_i);
 
-	int32_t row_start_n = cell_rect_i.top * (int32_t) self->grid_w + cell_rect_i.left;
+	for (int32_t cell_row_g = cell_rect_i.top; cell_row_g < cell_rect_i.bottom; cell_row_g++) {
+		int32_t cell_ptr_j = cell_row_g * (int32_t) self->grid_w + cell_rect_i.left;
 
-	for (uint32_t cell_row_g = (uint16_t) cell_rect_i.top; cell_rect_i.bottom > (int32_t) cell_row_g;
-		cell_row_g = (uint16_t) (cell_row_g + 1)) {
-		int32_t cell_ptr_j = row_start_n;
-
-		for (uint32_t cell_col_j = (uint16_t) cell_rect_i.left; cell_rect_i.right > (int32_t) cell_col_j;
-			cell_col_j = (uint16_t) (cell_col_j + 1)) {
+		for (int32_t cell_col_j = cell_rect_i.left; cell_col_j < cell_rect_i.right; cell_col_j++) {
 			uint32_t tile_c = grid_cell(self, cell_ptr_j++);
 			int32_t probe_h_l = 16 * (int32_t) cell_col_j + 8;
 			int32_t probe_v_e = 16 * (int32_t) cell_row_g + 8;
@@ -535,8 +547,6 @@ bool FordWagonCheckCollision(struct ford_wagon *self)
 				}
 			}
 		}
-
-		row_start_n += (int32_t) self->grid_w;
 	}
 
 	return result_g;
