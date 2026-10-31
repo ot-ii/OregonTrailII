@@ -16,6 +16,7 @@
 #include "../../src/base/object.h"
 #include "../../src/draw/palette.h"
 #include "../../src/game/party.h"
+#include "../../src/trail/fordwagon.h"
 #include "../../src/trail/raftframe.h"
 #include "../../src/trail/tilemap.h"
 #include "../../src/ui/view.h"
@@ -133,6 +134,60 @@ TEST_GAME(scn_raft, autopilot_steers)
 	TestLoad("raft_base");
 }
 
+struct edges {
+	int32_t map;
+	int32_t start_h, start_v, max_h, max_v;
+	int32_t width, height;
+	bool out_left, out_down, along_bank;
+};
+
+static void run_edges(void *arg)
+{
+	struct edges *r = arg;
+	struct raft_frame *raft = raft_scene(r->map);
+	struct tile_map *map = raft->tilemap;
+	struct spr_obj *obj = &raft->wagon->base.base;
+
+	r->width = (int32_t) raft->grid_width;
+	r->height = (int32_t) raft->grid_height;
+	r->start_h = obj->region1.p2.h;
+	r->start_v = obj->region1.p2.v;
+
+	TILE_MAP_OPS(map)->ScrollTo(map, 100000, 100000);
+	r->max_h = map->scroll_pos.h;
+	r->max_v = map->scroll_pos.v;
+
+	SPR_OBJ_OPS(obj)->SetAnchor(obj, 8 - map->scroll_pos.h, 16 * (r->height - 1) + 8 - map->scroll_pos.v);
+	r->out_left = FordWagonCanMove(raft->wagon, -48, 0);
+	r->out_down = FordWagonCanMove(raft->wagon, 0, 48);
+	r->along_bank = FordWagonCanMove(raft->wagon, 0, -8);
+}
+
+TEST_GAME(scn_raft, map_edges)
+{
+	struct edges r;
+
+	CHECK(TestSave("raft_base"));
+	TestLoad("raft_base");
+	for (int32_t map = 1000; map <= 1003; map++) {
+		memset(&r, 0, sizeof(r));
+		r.map = map;
+		TCase("raft map %d", map);
+		if (TGuarded(run_edges, &r)) {
+			CHECK_MSG(r.start_h >= 0 && r.start_h < 400 && r.start_v >= 0 && r.start_v < 400,
+				"map %d: the raft starts outside the view at %d,%d", map, r.start_h, r.start_v);
+			CHECK_EQ(r.max_h, 16 * (r.width - 25));
+			CHECK_EQ(r.max_v, 16 * (r.height - 25));
+			if (map == 1000)
+				CHECK(r.along_bank);
+			CHECK_MSG(!r.out_left, "map %d: the raft can leave through the left edge", map);
+			CHECK_MSG(!r.out_down, "map %d: the raft can leave through the bottom edge", map);
+		}
+	}
+	TestPump(300);
+	TestLoad("raft_base");
+}
+
 static void run_game(int32_t ms)
 {
 	DWORD until = GetTickCount() + (DWORD) ms;
@@ -194,6 +249,7 @@ TEST_GAME(scn_raft, autopilot_dalles)
 const struct test_reg TESTS_scn_raft[] = {
 	TEST_GAME_ENTRY(scn_raft, every_river_map),
 	TEST_GAME_ENTRY(scn_raft, autopilot_steers),
+	TEST_GAME_ENTRY(scn_raft, map_edges),
 	TEST_GAME_ENTRY(scn_raft, autopilot_dalles),
 	TEST_END
 };

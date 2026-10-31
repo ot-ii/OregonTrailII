@@ -350,11 +350,14 @@ void tile_map_dispatch_to_child_views(struct tile_map *self, int32_t dh, int32_t
 
 void tile_map_scroll_to(struct tile_map *self, int32_t h, int32_t v)
 {
-	if (self->map_rect.bottom + v / 16 >= map_height(self))
-		v = self->map_rect.bottom - (int32_t) ReadLeU16(self->map_data + 2);
+	int32_t last_h = 16 * (map_width(self) - self->map_rect.right);
+	int32_t last_v = 16 * (map_height(self) - self->map_rect.bottom);
 
-	if (self->map_rect.right + h / 16 >= (int16_t) map_width(self))
-		h = self->map_rect.right - map_width(self);
+	if (v > last_v)
+		v = last_v;
+
+	if (h > last_h)
+		h = last_h;
 
 	if (h < 0)
 		h = 0;
