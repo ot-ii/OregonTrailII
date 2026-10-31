@@ -1228,11 +1228,7 @@ void OtiiAppApplyScreenMode(struct otii_app *self)
 
 void otii_app_on_app_init(struct app *app)
 {
-	struct otii_app *self = (struct otii_app *) app;
-
-	self->sfx_stream = acquire_sound(SND_RSRC_BASE + 1);
-	if (self->sfx_stream)
-		SND_OBJ_OPS(self->sfx_stream)->Begin(self->sfx_stream, false);
+	(void) app;
 }
 
 void otii_app_on_menus_ready(struct app *self)
