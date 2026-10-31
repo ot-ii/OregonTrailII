@@ -24,6 +24,8 @@ CFLAGS = /nologo /c /TC /std:c11 $(OPT) /Zi /FS /Fd$(NAME).pdb $(DEFS) $(WARN) $
 !INCLUDE version.make
 VER_DEFS = /DVER_MAJOR=$(VER_MAJOR) /DVER_MINOR=$(VER_MINOR) /DVER_BUILD=$(VER_BUILD)
 
+DEPLOY_DIR = deploy\\$(VER_MAJOR).$(VER_MINOR).$(VER_BUILD)\\
+
 LIBS = user32.lib gdi32.lib winmm.lib kernel32.lib bcrypt.lib
 
 MAIN_OBJ = src\app\windows\main.obj
@@ -426,3 +428,19 @@ datadump$(BITS).exe: clean $(FOUNDATION_OBJS) $(DATA_OBJS) tests/datadump.obj
 
 clean:
 	-@del /q *.obj *.pdb unit_foundation$(BITS).* $(NAME).* 2>nul
+
+deploy: clean
+	mkdir $(DEPLOY_DIR)
+	$(MAKE) game
+	@copy /y $(NAME).exe "$(DEPLOY_DIR)$(NAME)_offline.exe"
+	@copy /y $(NAME).map "$(DEPLOY_DIR)$(NAME)_offline.map"
+	@copy /y $(NAME).pdb "$(DEPLOY_DIR)$(NAME)_offline.pdb"
+	$(MAKE) online
+	@copy /y $(NAME)_online.exe "$(DEPLOY_DIR)$(NAME)_online.exe"
+	@copy /y $(NAME)_online.map "$(DEPLOY_DIR)$(NAME)_online.map"
+	@copy /y $(NAME)_online.pdb "$(DEPLOY_DIR)$(NAME)_online.pdb"
+	$(MAKE) crowd
+	@copy /y $(NAME)_crowd.exe "$(DEPLOY_DIR)$(NAME)_crowd.exe"
+	@copy /y $(NAME)_crowd.map "$(DEPLOY_DIR)$(NAME)_crowd.map"
+	@copy /y $(NAME)_crowd.pdb "$(DEPLOY_DIR)$(NAME)_crowd.pdb"
+
